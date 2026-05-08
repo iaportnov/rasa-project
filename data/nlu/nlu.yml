@@ -89,3 +89,46 @@ nlu:
     - are you a human?
     - am I talking to a bot?
     - am I talking to a human?
+
+- intent: inform_role
+    examples: |
+      - I want to apply for [Data Scientist](role)
+      - I am interested in the [Data Analyst](role) position
+      - I would like to work as a [Data Engineer](role)
+      - I want to be a [Project Manager](role)
+      - I am applying for [MLOps Engineer](role)
+      - The role I want is [Data Scientist](role)
+      - I prefer [Data Analyst](role)
+      - I am looking for a [Project Manager](role) role
+
+  - intent: inform_experience
+    examples: |
+      - I have [2](experience_years) years of experience
+      - I have [1](experience_years) year of experience
+      - I have been working for [3](experience_years) years
+      - I have [5](experience_years) years in data
+      - I have no work experience
+      - I am a beginner
+      - I have less than [1](experience_years) year of experience
+
+  - intent: inform_skills
+    examples: |
+      - I know [Python](skill), [SQL](skill), and [pandas](skill)
+      - I worked with [Airflow](skill), [Spark](skill), and [Kafka](skill)
+      - I have experience with [Docker](skill) and [Kubernetes](skill)
+      - I know [Agile](skill), [Scrum](skill), and [Jira](skill)
+      - I worked with [sklearn](skill), [CatBoost](skill), and [MLflow](skill)
+      - My skills are [Python](skill), [machine learning](skill), and [statistics](skill)
+      - I can use [Power BI](skill), [Tableau](skill), and [Excel](skill)
+      - I know [ETL](skill), [DWH](skill), and [SQL](skill)
+      - I have skills in [CI/CD](skill), [Linux](skill), and [monitoring](skill)
+
+  - intent: inform_salary
+    examples: |
+      - My expected salary is [200000](salary)
+      - I expect [150000](salary)
+      - I would like to earn [250000](salary)
+      - My salary expectation is [180000](salary)
+      - I want [300000](salary) per month
+      - Around [220000](salary)
+      
