@@ -5,29 +5,71 @@ intents:
   - goodbye
   - affirm
   - deny
-  - mood_great
-  - mood_unhappy
   - bot_challenge
+  - inform_role
+  - inform_experience
+  - inform_skills
+  - inform_salary
+
+entities:
+  - role
+  - skill
+  - experience_years
+  - salary
+
+slots:
+  desired_role:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: role
+
+  skills:
+    type: list
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: skill
+
+  experience_years:
+    type: float
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: experience_years
+
+  salary_expectation:
+    type: float
+    influence_conversation: false
+    mappings:
+      - type: from_entity
+        entity: salary
 
 responses:
   utter_greet:
-  - text: "Hey! How are you?"
+    - text: "Hello! I am an HR screening bot. I will ask you a few questions to understand which role in our ML project team fits you best."
 
-  utter_cheer_up:
-  - text: "Here is something to cheer you up:"
-    image: "https://i.imgur.com/nGF1K8f.jpg"
+  utter_ask_role:
+    - text: "Which role are you interested in: Project Manager, Data Analyst, Data Engineer, Data Scientist, or MLOps Engineer?"
 
-  utter_did_that_help:
-  - text: "Did that help you?"
+  utter_ask_experience:
+    - text: "How many years of relevant experience do you have?"
 
-  utter_happy:
-  - text: "Great, carry on!"
+  utter_ask_skills:
+    - text: "Please list your main professional skills and tools."
+
+  utter_ask_salary:
+    - text: "What are your salary expectations?"
 
   utter_goodbye:
-  - text: "Bye"
+    - text: "Goodbye! Thank you for your time."
 
   utter_iamabot:
-  - text: "I am a bot, powered by Rasa."
+    - text: "Yes, I am an HR screening bot powered by RASA."
+
+actions:
+  - action_evaluate_candidate
 
 session_config:
   session_expiration_time: 60
