@@ -109,7 +109,32 @@ def calculate_scores(skills, experience_years):
     return scores
 
 
-def build_feedback(best_role, best_score, scores):
+def analyze_salary(salary_expectation, experience_years):
+    try:
+        salary = float(salary_expectation)
+    except (TypeError, ValueError):
+        return "Salary expectation was not clearly provided."
+
+    try:
+        experience = float(experience_years)
+    except (TypeError, ValueError):
+        experience = 0
+
+    if salary <= 150000:
+        return "Your salary expectations look realistic for a junior or early middle candidate."
+
+    if 150000 < salary <= 250000:
+        return "Your salary expectations look reasonable for a middle-level candidate."
+
+    if 250000 < salary <= 350000:
+        if experience >= 3:
+            return "Your salary expectations are high, but they may be reasonable with your experience level."
+        return "Your salary expectations are quite high for your current experience level."
+
+    return "Your salary expectations are very high, so the recruiter may need additional justification based on your experience and skills."
+
+
+def build_feedback(best_role, best_score, scores, salary_comment):
     if best_score >= 7:
         level = "high"
         decision = f"You are a good fit for the {best_role} role."
@@ -139,6 +164,7 @@ def build_feedback(best_role, best_score, scores):
         f"{decision}\n\n"
         f"Match level: {level}\n\n"
         f"Scores:\n{score_details}\n\n"
+        f"Salary expectation: {salary_comment}\n\n"
         f"Recommendation: {recommendation}"
     )
 
@@ -157,14 +183,13 @@ class ActionEvaluateCandidate(Action):
 
         skills = tracker.get_slot("skills")
         experience_years = tracker.get_slot("experience_years")
-
+        salary_expectation = tracker.get_slot("salary_expectation")
+        
         scores = calculate_scores(skills, experience_years)
-
+        
         best_role = max(scores, key=scores.get)
         best_score = scores[best_role]
-
-        feedback = build_feedback(best_role, best_score, scores)
-
-        dispatcher.utter_message(text=feedback)
-
-        return []
+        
+        salary_comment = analyze_salary(salary_expectation, experience_years)
+        
+        feedback = build_feedback(best_role, best_score, scores, salary_comment)
