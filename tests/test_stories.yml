@@ -89,3 +89,27 @@ stories:
       are you a bot?
     intent: bot_challenge
   - action: utter_iamabot
+
+- story: test data scientist candidate
+    steps:
+      - user: |
+          hello
+        intent: greet
+      - action: utter_greet
+      - action: utter_ask_role
+      - user: |
+          I want to apply for Data Scientist
+        intent: inform_role
+      - action: utter_ask_experience
+      - user: |
+          I have 2 years of experience
+        intent: inform_experience
+      - action: utter_ask_skills
+      - user: |
+          I know Python, pandas, sklearn and machine learning
+        intent: inform_skills
+      - action: utter_ask_salary
+      - user: |
+          My expected salary is 200000
+        intent: inform_salary
+      - action: action_evaluate_candidate
