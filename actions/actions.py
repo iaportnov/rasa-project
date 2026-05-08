@@ -193,3 +193,6 @@ class ActionEvaluateCandidate(Action):
         salary_comment = analyze_salary(salary_expectation, experience_years)
         
         feedback = build_feedback(best_role, best_score, scores, salary_comment)
+        dispatcher.utter_message(text=feedback)
+
+        return []
