@@ -2,9 +2,38 @@ version: "3.1"
 
 stories:
 
-- story: happy path
-  steps:
-  - intent: greet
-  - action: utter_greet
-  - intent: mood_great
-  - action: utter_happy
+  - story: full candidate screening path
+    steps:
+      - intent: greet
+      - action: utter_greet
+      - action: utter_ask_role
+      - intent: inform_role
+      - action: utter_ask_experience
+      - intent: inform_experience
+      - action: utter_ask_skills
+      - intent: inform_skills
+      - action: utter_ask_salary
+      - intent: inform_salary
+      - action: action_evaluate_candidate
+
+  - story: candidate starts with role
+    steps:
+      - intent: inform_role
+      - action: utter_ask_experience
+      - intent: inform_experience
+      - action: utter_ask_skills
+      - intent: inform_skills
+      - action: utter_ask_salary
+      - intent: inform_salary
+      - action: action_evaluate_candidate
+
+  - story: candidate starts with skills
+    steps:
+      - intent: inform_skills
+      - action: utter_ask_role
+      - intent: inform_role
+      - action: utter_ask_experience
+      - intent: inform_experience
+      - action: utter_ask_salary
+      - intent: inform_salary
+      - action: action_evaluate_candidate
