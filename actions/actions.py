@@ -5,7 +5,7 @@ from rasa_sdk.executor import CollectingDispatcher
 
 
 ROLE_REQUIREMENTS = {
-    "Project Manager": {
+    "Менеджер проекта": {
         "agile": 2,
         "scrum": 2,
         "kanban": 1,
@@ -18,25 +18,34 @@ ROLE_REQUIREMENTS = {
         "коммуникация с бизнесом": 2,
         "планирование": 1,
         "постановка задач": 1,
+        "работа с заказчиком": 1,
+        "управление сроками": 1,
     },
-    "Data Analyst": {
+
+    "Дата-аналитик": {
         "sql": 2,
         "python": 2,
         "pandas": 1,
         "numpy": 1,
+        "excel": 1,
         "power bi": 1,
         "tableau": 1,
-        "excel": 1,
+        "datalens": 1,
+        "superset": 1,
         "статистика": 2,
         "a/b testing": 2,
         "a/b тесты": 2,
         "аб тесты": 2,
+        "ab тесты": 2,
         "метрики": 2,
+        "продуктовые метрики": 2,
         "дашборды": 1,
         "визуализация данных": 1,
         "анализ данных": 2,
+        "продуктовая аналитика": 2,
     },
-    "Data Engineer": {
+
+    "Дата-инженер": {
         "sql": 2,
         "python": 2,
         "scala": 2,
@@ -49,11 +58,16 @@ ROLE_REQUIREMENTS = {
         "kafka": 2,
         "dwh": 1,
         "data lake": 1,
+        "greenplum": 1,
+        "clickhouse": 1,
+        "postgresql": 1,
         "хранилище данных": 1,
         "пайплайны данных": 2,
         "базы данных": 1,
+        "инженерия данных": 2,
     },
-    "Data Scientist": {
+
+    "Дата-сайентист": {
         "python": 2,
         "pandas": 1,
         "numpy": 1,
@@ -71,13 +85,18 @@ ROLE_REQUIREMENTS = {
         "computer vision": 1,
         "компьютерное зрение": 1,
         "статистика": 1,
+        "математическая статистика": 1,
         "модели": 2,
+        "ml-модели": 2,
+        "обучение моделей": 2,
     },
-    "MLOps Engineer": {
+
+    "MLOps-инженер": {
         "python": 1,
         "docker": 2,
         "kubernetes": 2,
         "ci/cd": 2,
+        "cicd": 2,
         "mlflow": 2,
         "dvc": 2,
         "linux": 1,
@@ -89,11 +108,19 @@ ROLE_REQUIREMENTS = {
         "деплой": 2,
         "развертывание моделей": 2,
         "инфраструктура": 1,
+        "mlops": 2,
+        "production": 1,
     },
 }
 
 
 def normalize_skills(skills):
+    """
+    Приводит навыки к единому формату:
+    - если навыков нет, возвращает пустой список;
+    - если пришла одна строка, превращает её в список;
+    - приводит всё к нижнему регистру.
+    """
     if not skills:
         return []
 
@@ -104,6 +131,10 @@ def normalize_skills(skills):
 
 
 def calculate_scores(skills, experience_years):
+    """
+    Считает баллы кандидата по каждой роли.
+    Баллы начисляются за совпадение навыков и за опыт работы.
+    """
     scores = {role: 0 for role in ROLE_REQUIREMENTS}
     normalized_skills = normalize_skills(skills)
 
@@ -129,6 +160,10 @@ def calculate_scores(skills, experience_years):
 
 
 def analyze_salary(salary_expectation, experience_years):
+    """
+    Анализирует зарплатные ожидания кандидата.
+    Зарплата не выбирает роль напрямую, но добавляется в финальный комментарий.
+    """
     try:
         salary = float(salary_expectation)
     except (TypeError, ValueError):
@@ -147,19 +182,22 @@ def analyze_salary(salary_expectation, experience_years):
 
     if 250000 < salary <= 350000:
         if experience >= 3:
-            return "Ваши зарплатные ожидания достаточно высокие, но могут быть обоснованы при вашем уровне опыта."
+            return "Ваши зарплатные ожидания достаточно высокие, но могут быть обоснованы вашим уровнем опыта."
         return "Ваши зарплатные ожидания выглядят довольно высокими для текущего уровня опыта."
 
     return "Ваши зарплатные ожидания очень высокие, поэтому рекрутеру может понадобиться дополнительное подтверждение вашего опыта и навыков."
 
 
 def build_feedback(best_role, best_score, scores, salary_comment):
+    """
+    Формирует итоговый ответ для кандидата.
+    """
     if best_score >= 7:
         level = "высокий"
-        decision = f"Вы хорошо подходите на роль {best_role}."
+        decision = f"Вы хорошо подходите на роль «{best_role}»."
     elif best_score >= 4:
         level = "средний"
-        decision = f"Вы частично подходите на роль {best_role}."
+        decision = f"Вы частично подходите на роль «{best_role}»."
     else:
         level = "низкий"
         decision = "На данный момент вы не полностью подходите ни на одну из ролей в ML-команде."
@@ -170,7 +208,7 @@ def build_feedback(best_role, best_score, scores, salary_comment):
 
     if best_score >= 4:
         recommendation = (
-            f"Больше всего вам подходит роль {best_role}. "
+            f"Больше всего вам подходит роль «{best_role}». "
             "Чтобы усилить профиль, стоит развивать недостающие технические и практические навыки для этой роли."
         )
     else:
@@ -189,6 +227,10 @@ def build_feedback(best_role, best_score, scores, salary_comment):
 
 
 class ActionEvaluateCandidate(Action):
+    """
+    Кастомное действие RASA.
+    Получает данные из слотов, считает баллы и отправляет кандидату итоговую рекомендацию.
+    """
 
     def name(self) -> Text:
         return "action_evaluate_candidate"
@@ -211,7 +253,12 @@ class ActionEvaluateCandidate(Action):
 
         salary_comment = analyze_salary(salary_expectation, experience_years)
 
-        feedback = build_feedback(best_role, best_score, scores, salary_comment)
+        feedback = build_feedback(
+            best_role=best_role,
+            best_score=best_score,
+            scores=scores,
+            salary_comment=salary_comment,
+        )
 
         dispatcher.utter_message(text=feedback)
 
