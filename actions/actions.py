@@ -114,6 +114,47 @@ ROLE_REQUIREMENTS = {
 }
 
 
+ROLE_SYNONYMS = {
+    # Дата-аналитик
+    "дата-аналитик": "Дата-аналитик",
+    "дата аналитик": "Дата-аналитик",
+    "аналитик данных": "Дата-аналитик",
+    "продуктовый аналитик": "Дата-аналитик",
+    "bi-аналитик": "Дата-аналитик",
+    "би-аналитик": "Дата-аналитик",
+    "data analyst": "Дата-аналитик",
+
+    # Дата-сайентист
+    "дата-сайентист": "Дата-сайентист",
+    "дата сайентист": "Дата-сайентист",
+    "data scientist": "Дата-сайентист",
+    "специалист по машинному обучению": "Дата-сайентист",
+    "ml-специалист": "Дата-сайентист",
+    "ml специалист": "Дата-сайентист",
+    "machine learning engineer": "Дата-сайентист",
+
+    # Дата-инженер
+    "дата-инженер": "Дата-инженер",
+    "дата инженер": "Дата-инженер",
+    "инженер данных": "Дата-инженер",
+    "data engineer": "Дата-инженер",
+
+    # Менеджер проекта
+    "менеджер проекта": "Менеджер проекта",
+    "проектный менеджер": "Менеджер проекта",
+    "проджект менеджер": "Менеджер проекта",
+    "project manager": "Менеджер проекта",
+    "pm": "Менеджер проекта",
+
+    # MLOps-инженер
+    "mlops-инженер": "MLOps-инженер",
+    "mlops инженер": "MLOps-инженер",
+    "mlops engineer": "MLOps-инженер",
+    "mlops": "MLOps-инженер",
+    "инженер mlops": "MLOps-инженер",
+}
+
+
 def normalize_skills(skills):
     """
     Приводит навыки к единому формату:
@@ -128,6 +169,19 @@ def normalize_skills(skills):
         skills = [skills]
 
     return [skill.lower().strip() for skill in skills]
+
+
+def normalize_role(role):
+    """
+    Приводит разные варианты названия роли к единому стандарту.
+    Например: 'аналитик данных', 'дата-аналитик', 'Data Analyst'
+    превращаются в 'Дата-аналитик'.
+    """
+    if not role:
+        return None
+
+    role = str(role).lower().strip()
+    return ROLE_SYNONYMS.get(role, role)
 
 
 def calculate_scores(skills, experience_years):
@@ -188,7 +242,30 @@ def analyze_salary(salary_expectation, experience_years):
     return "Ваши зарплатные ожидания очень высокие, поэтому рекрутеру может понадобиться дополнительное подтверждение вашего опыта и навыков."
 
 
-def build_feedback(best_role, best_score, scores, salary_comment):
+def compare_desired_and_best_role(desired_role, best_role):
+    """
+    Сравнивает роль, которую указал кандидат, с ролью,
+    которую бот выбрал по навыкам и опыту.
+    """
+    if not desired_role:
+        return "Вы не указали желаемую роль, поэтому рекомендация построена только на ваших навыках и опыте."
+
+    if desired_role == best_role:
+        return f"Вы указали роль «{desired_role}», и она совпадает с нашей рекомендацией."
+
+    if desired_role in ROLE_REQUIREMENTS:
+        return (
+            f"Вы указали роль «{desired_role}», но по вашим навыкам и опыту "
+            f"больше подходит роль «{best_role}»."
+        )
+
+    return (
+        f"Вы указали роль «{desired_role}», но бот не смог однозначно сопоставить её "
+        f"с одной из стандартных ролей. Поэтому итоговая рекомендация построена по навыкам и опыту."
+    )
+
+
+def build_feedback(best_role, best_score, scores, salary_comment, role_comment):
     """
     Формирует итоговый ответ для кандидата.
     """
@@ -220,6 +297,7 @@ def build_feedback(best_role, best_score, scores, salary_comment):
     return (
         f"{decision}\n\n"
         f"Уровень соответствия: {level}\n\n"
+        f"Комментарий по желаемой роли: {role_comment}\n\n"
         f"Баллы по ролям:\n{score_details}\n\n"
         f"Анализ зарплатных ожиданий: {salary_comment}\n\n"
         f"Рекомендация: {recommendation}"
@@ -245,6 +323,9 @@ class ActionEvaluateCandidate(Action):
         skills = tracker.get_slot("skills")
         experience_years = tracker.get_slot("experience_years")
         salary_expectation = tracker.get_slot("salary_expectation")
+        desired_role = tracker.get_slot("desired_role")
+
+        desired_role = normalize_role(desired_role)
 
         scores = calculate_scores(skills, experience_years)
 
@@ -252,12 +333,14 @@ class ActionEvaluateCandidate(Action):
         best_score = scores[best_role]
 
         salary_comment = analyze_salary(salary_expectation, experience_years)
+        role_comment = compare_desired_and_best_role(desired_role, best_role)
 
         feedback = build_feedback(
             best_role=best_role,
             best_score=best_score,
             scores=scores,
             salary_comment=salary_comment,
+            role_comment=role_comment,
         )
 
         dispatcher.utter_message(text=feedback)
