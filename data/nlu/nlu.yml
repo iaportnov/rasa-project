@@ -1,134 +1,238 @@
 version: "3.1"
 
 nlu:
-- intent: greet
-  examples: |
-    - hey
-    - hello
-    - hi
-    - hello there
-    - good morning
-    - good evening
-    - moin
-    - hey there
-    - let's go
-    - hey dude
-    - goodmorning
-    - goodevening
-    - good afternoon
-
-- intent: goodbye
-  examples: |
-    - cu
-    - good by
-    - cee you later
-    - good night
-    - bye
-    - goodbye
-    - have a nice day
-    - see you around
-    - bye bye
-    - see you later
-
-- intent: affirm
-  examples: |
-    - yes
-    - y
-    - indeed
-    - of course
-    - that sounds good
-    - correct
-
-- intent: deny
-  examples: |
-    - no
-    - n
-    - never
-    - I don't think so
-    - don't like that
-    - no way
-    - not really
-
-- intent: mood_great
-  examples: |
-    - perfect
-    - great
-    - amazing
-    - feeling like a king
-    - wonderful
-    - I am feeling very good
-    - I am great
-    - I am amazing
-    - I am going to save the world
-    - super stoked
-    - extremely good
-    - so so perfect
-    - so good
-    - so perfect
-
-- intent: mood_unhappy
-  examples: |
-    - my day was horrible
-    - I am sad
-    - I don't feel very well
-    - I am disappointed
-    - super sad
-    - I'm so sad
-    - sad
-    - very sad
-    - unhappy
-    - not good
-    - not very good
-    - extremly sad
-    - so saad
-    - so sad
-
-- intent: bot_challenge
-  examples: |
-    - are you a bot?
-    - are you a human?
-    - am I talking to a bot?
-    - am I talking to a human?
-
-- intent: inform_role
+  - intent: greet
     examples: |
-      - I want to apply for [Data Scientist](role)
-      - I am interested in the [Data Analyst](role) position
-      - I would like to work as a [Data Engineer](role)
-      - I want to be a [Project Manager](role)
-      - I am applying for [MLOps Engineer](role)
-      - The role I want is [Data Scientist](role)
-      - I prefer [Data Analyst](role)
-      - I am looking for a [Project Manager](role) role
+      - привет
+      - здравствуйте
+      - добрый день
+      - доброе утро
+      - добрый вечер
+      - приветствую
+      - хай
+      - hello
+      - hi
+
+  - intent: goodbye
+    examples: |
+      - пока
+      - до свидания
+      - всего доброго
+      - спасибо, до свидания
+      - спасибо, пока
+      - хорошего дня
+      - увидимся
+      - bye
+
+  - intent: affirm
+    examples: |
+      - да
+      - верно
+      - правильно
+      - всё верно
+      - да, всё так
+      - подтверждаю
+      - согласен
+      - конечно
+      - именно
+
+  - intent: deny
+    examples: |
+      - нет
+      - не совсем
+      - неправильно
+      - это не так
+      - не согласен
+      - нет, не верно
+      - скорее нет
+      - не думаю
+
+  - intent: bot_challenge
+    examples: |
+      - ты бот?
+      - вы бот?
+      - я разговариваю с ботом?
+      - ты человек?
+      - кто ты?
+      - что ты умеешь?
+      - ты настоящий рекрутер?
+      - это автоматический бот?
+
+  - intent: inform_role
+    examples: |
+      - Я хочу откликнуться на роль [дата-аналитика](role)
+      - Мне интересна позиция [аналитика данных](role)
+      - Я хочу работать как [продуктовый аналитик](role)
+      - Рассматриваю роль [BI-аналитика](role)
+      - Мне интересна [аналитика данных](role)
+      - Хочу на позицию [Data Analyst](role)
+      - Я бы хотел быть [дата-аналитиком](role)
+
+      - Я хочу откликнуться на роль [дата-сайентиста](role)
+      - Мне интересна позиция [Data Scientist](role)
+      - Хочу работать как [специалист по машинному обучению](role)
+      - Рассматриваю роль [ML-специалиста](role)
+      - Мне интересна работа в [машинном обучении](role)
+      - Я хочу заниматься [Data Science](role)
+      - Хочу быть [дата-сайентистом](role)
+
+      - Я хочу откликнуться на роль [дата-инженера](role)
+      - Мне интересна позиция [инженера данных](role)
+      - Хочу работать как [Data Engineer](role)
+      - Рассматриваю роль [дата-инженер](role)
+      - Я хочу заниматься [инженерией данных](role)
+      - Мне интересна работа с пайплайнами данных на позиции [дата-инженера](role)
+
+      - Я хочу откликнуться на роль [менеджера проекта](role)
+      - Мне интересна позиция [Project Manager](role)
+      - Хочу работать как [проектный менеджер](role)
+      - Рассматриваю роль [проджект менеджера](role)
+      - Я хочу быть [PM](role)
+      - Мне интересна роль [менеджера ML-проекта](role)
+
+      - Я хочу откликнуться на роль [MLOps-инженера](role)
+      - Мне интересна позиция [MLOps Engineer](role)
+      - Хочу работать как [MLOps-инженер](role)
+      - Рассматриваю роль [инженера MLOps](role)
+      - Я хочу заниматься [MLOps](role)
+      - Мне интересна инфраструктура ML-моделей на роли [MLOps-инженера](role)
 
   - intent: inform_experience
     examples: |
-      - I have [2](experience_years) years of experience
-      - I have [1](experience_years) year of experience
-      - I have been working for [3](experience_years) years
-      - I have [5](experience_years) years in data
-      - I have no work experience
-      - I am a beginner
-      - I have less than [1](experience_years) year of experience
+      - У меня [0](experience_years) лет опыта
+      - У меня нет опыта работы
+      - Я начинающий специалист
+      - Опыта пока нет
+      - У меня меньше [1](experience_years) года опыта
+      - У меня [1](experience_years) год опыта
+      - У меня [2](experience_years) года опыта
+      - У меня [3](experience_years) года опыта
+      - У меня [5](experience_years) лет опыта
+      - Я работаю в этой сфере [1](experience_years) год
+      - Я работаю в этой сфере [2](experience_years) года
+      - Я работаю в этой сфере [4](experience_years) года
+      - В аналитике у меня [2](experience_years) года опыта
+      - В ML у меня [3](experience_years) года опыта
+      - В управлении проектами у меня [5](experience_years) лет опыта
+      - В разработке и данных у меня [4](experience_years) года опыта
+      - Релевантный опыт составляет [2](experience_years) года
+      - Опыт работы примерно [3](experience_years) года
 
   - intent: inform_skills
     examples: |
-      - I know [Python](skill), [SQL](skill), and [pandas](skill)
-      - I worked with [Airflow](skill), [Spark](skill), and [Kafka](skill)
-      - I have experience with [Docker](skill) and [Kubernetes](skill)
-      - I know [Agile](skill), [Scrum](skill), and [Jira](skill)
-      - I worked with [sklearn](skill), [CatBoost](skill), and [MLflow](skill)
-      - My skills are [Python](skill), [machine learning](skill), and [statistics](skill)
-      - I can use [Power BI](skill), [Tableau](skill), and [Excel](skill)
-      - I know [ETL](skill), [DWH](skill), and [SQL](skill)
-      - I have skills in [CI/CD](skill), [Linux](skill), and [monitoring](skill)
+      - Я знаю [Python](skill), [SQL](skill) и [pandas](skill)
+      - Умею работать с [SQL](skill), [Excel](skill) и [Power BI](skill)
+      - У меня есть опыт в [анализе данных](skill), [статистике](skill) и [дашбордах](skill)
+      - Я работал с [метриками](skill), [A/B тестами](skill) и [визуализацией данных](skill)
+      - Мои основные навыки это [SQL](skill), [Python](skill), [продуктовая аналитика](skill)
+      - Я умею строить [дашборды](skill) и анализировать [продуктовые метрики](skill)
+      - Я знаю [Tableau](skill), [Power BI](skill), [Excel](skill)
+      - У меня есть опыт с [Datalens](skill), [Superset](skill) и [SQL](skill)
+
+      - Я знаю [Python](skill), [machine learning](skill), [sklearn](skill)
+      - Я работал с [CatBoost](skill), [XGBoost](skill) и [LightGBM](skill)
+      - У меня есть опыт в [машинном обучении](skill), [статистике](skill) и [обучении моделей](skill)
+      - Я занимался [NLP](skill) и [computer vision](skill)
+      - Я знаю [глубокое обучение](skill), [нейронные сети](skill), [ML](skill)
+      - Мои навыки: [Python](skill), [pandas](skill), [numpy](skill), [scikit-learn](skill)
+      - Я умею обучать [ML-модели](skill) и оценивать их качество
+      - Я работал с [моделями](skill), [математической статистикой](skill) и [машинным обучением](skill)
+
+      - Я знаю [Airflow](skill), [Spark](skill), [Kafka](skill)
+      - Я работал с [ETL](skill), [DWH](skill), [Data Lake](skill)
+      - У меня есть опыт построения [пайплайнов данных](skill)
+      - Я умею работать с [Hadoop](skill), [Spark](skill), [Greenplum](skill)
+      - Мои навыки: [SQL](skill), [Python](skill), [Airflow](skill), [ClickHouse](skill)
+      - Я занимался [инженерией данных](skill), [базами данных](skill) и [хранилищами данных](skill)
+      - Я работал с [PostgreSQL](skill), [Kafka](skill) и [Airflow](skill)
+      - Умею проектировать [хранилище данных](skill) и настраивать [ETL](skill)
+
+      - Я знаю [Docker](skill), [Kubernetes](skill), [CI/CD](skill)
+      - У меня есть опыт с [MLflow](skill), [DVC](skill), [Linux](skill)
+      - Я занимался [деплоем](skill) моделей и [мониторингом](skill)
+      - Я работал с [Prometheus](skill), [Grafana](skill), [Docker](skill)
+      - Мои навыки: [MLOps](skill), [инфраструктура](skill), [развертывание моделей](skill)
+      - Я умею выводить модели в [production](skill)
+      - Я занимался [deployment](skill), [мониторингом](skill) и [CI/CD](skill)
+
+      - Я знаю [Agile](skill), [Scrum](skill), [Jira](skill)
+      - У меня есть опыт в [управлении проектами](skill) и [управлении командой](skill)
+      - Я занимался [планированием](skill), [постановкой задач](skill), [коммуникацией с бизнесом](skill)
+      - Я работал с [Confluence](skill), [Kanban](skill), [Jira](skill)
+      - Мои навыки: [проектное управление](skill), [работа с заказчиком](skill), [управление сроками](skill)
+      - Я координировал команду и занимался [планированием](skill)
+      - Я умею вести проект, общаться с бизнесом и управлять сроками
 
   - intent: inform_salary
     examples: |
-      - My expected salary is [200000](salary)
-      - I expect [150000](salary)
-      - I would like to earn [250000](salary)
-      - My salary expectation is [180000](salary)
-      - I want [300000](salary) per month
-      - Around [220000](salary)
-      
+      - Мои зарплатные ожидания [150000](salary)
+      - Я ожидаю [200000](salary)
+      - Хотел бы получать [250000](salary)
+      - Ожидаю зарплату [180000](salary)
+      - Хочу [300000](salary) рублей в месяц
+      - Примерно [220000](salary)
+      - Около [200000](salary) рублей
+      - Зарплатные ожидания составляют [250000](salary)
+      - Рассматриваю предложения от [180000](salary)
+      - Хотелось бы получать не меньше [200000](salary)
+      - Меня устроит зарплата [150000](salary)
+      - Ожидаю примерно [350000](salary) рублей
+      - Хочу зарплату около [300000](salary)
+      - Моя желаемая зарплата [230000](salary)
+
+  - synonym: Дата-аналитик
+    examples: |
+      - дата-аналитик
+      - дата аналитик
+      - аналитик данных
+      - аналитика данных
+      - продуктовый аналитик
+      - BI-аналитик
+      - би-аналитик
+      - Data Analyst
+      - data analyst
+
+  - synonym: Дата-сайентист
+    examples: |
+      - дата-сайентист
+      - дата сайентист
+      - Data Scientist
+      - data scientist
+      - Data Science
+      - data science
+      - специалист по машинному обучению
+      - ML-специалист
+      - ml-специалист
+      - ML специалист
+      - машинное обучение
+
+  - synonym: Дата-инженер
+    examples: |
+      - дата-инженер
+      - дата инженер
+      - инженер данных
+      - инженерия данных
+      - Data Engineer
+      - data engineer
+
+  - synonym: Менеджер проекта
+    examples: |
+      - менеджер проекта
+      - проектный менеджер
+      - проджект менеджер
+      - Project Manager
+      - project manager
+      - PM
+      - pm
+      - менеджер ML-проекта
+
+  - synonym: MLOps-инженер
+    examples: |
+      - MLOps-инженер
+      - mlops-инженер
+      - MLOps Engineer
+      - mlops engineer
+      - инженер MLOps
+      - инженер mlops
+      - MLOps
+      - mlops
