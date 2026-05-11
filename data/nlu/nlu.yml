@@ -1,91 +1,120 @@
 version: "3.1"
 
 nlu:
-- intent: greet
-  examples: |
-    - hey
-    - hello
-    - hi
-    - hello there
-    - good morning
-    - good evening
-    - moin
-    - hey there
-    - let's go
-    - hey dude
-    - goodmorning
-    - goodevening
-    - good afternoon
+  - intent: greet
+    examples: |
+      - Привет
+      - Приветствую
+      - Здравствуй
+      - Добрый день
+      - Доброе утро
+      - Добрый вечер
+      - Йо
+      - Hello
+      - Hi
 
-- intent: goodbye
-  examples: |
-    - cu
-    - good by
-    - cee you later
-    - good night
-    - bye
-    - goodbye
-    - have a nice day
-    - see you around
-    - bye bye
-    - see you later
+  - intent: inform_position
+    examples: |
+      - Data Scientist
+      - Data Engineer
+      - MLOps Engineer
+      - Project Manager
+      - Data Analyst
+      - data scientist
+      - mlops engineer
+      - project manager
+      - data analyst
+      - Хочу Data Scientist
+      - Хочу на Data Scientist
+      - Ищу Data Engineer
+      - Рассматриваю MLOps
+      - Пойду на Project Manager
+      - На позицию Data Analyst
+      - 1
+      - 2
+      - 3
+      - 4
+      - 5
+      - первый
+      - второй
+      - третий
+      - четвёртый
+      - пятый
+      - Выбираю Data Scientist
+      - Мне интересен MLOps Engineer
 
-- intent: affirm
-  examples: |
-    - yes
-    - y
-    - indeed
-    - of course
-    - that sounds good
-    - correct
+  - intent: inform_experience
+    examples: |
+      - У меня 3 года опыта
+      - Опыт 2.5 года
+      - Работал 4 года в ML
+      - У меня год опыта
+      - Более 5 лет в data engineering
+      - 1.5 года в машинном обучении
+      - Опыт около 3 лет
+      - У меня почти 4 года
 
-- intent: deny
-  examples: |
-    - no
-    - n
-    - never
-    - I don't think so
-    - don't like that
-    - no way
-    - not really
+  - intent: inform_skills
+    examples: |
+      - Знаю python, pytorch, sql
+      - У меня python, docker, kubernetes
+      - Владею pandas, scikit-learn, airflow
+      - python, sql, pytorch, docker
+      - Знаю kafka и airflow
+      - Умею работать с kubernetes и docker
+      - Основные навыки: python, sql, pandas
+      - pytorch, tensorflow, scikit-learn
 
-- intent: mood_great
-  examples: |
-    - perfect
-    - great
-    - amazing
-    - feeling like a king
-    - wonderful
-    - I am feeling very good
-    - I am great
-    - I am amazing
-    - I am going to save the world
-    - super stoked
-    - extremely good
-    - so so perfect
-    - so good
-    - so perfect
+  - intent: inform_salary
+    examples: |
+      - Ожидаю 250 тысяч
+      - Хочу от 200к
+      - Зарплата 300000 рублей
+      - Рассчитываю на 180-220 тысяч
+      - От 250 тысяч net
+      - 350к будет нормально
+      - Ожидаемая зарплата 280 тысяч
 
-- intent: mood_unhappy
-  examples: |
-    - my day was horrible
-    - I am sad
-    - I don't feel very well
-    - I am disappointed
-    - super sad
-    - I'm so sad
-    - sad
-    - very sad
-    - unhappy
-    - not good
-    - not very good
-    - extremly sad
-    - so saad
-    - so sad
+  - intent: affirm
+    examples: |
+      - Да
+      - Конечно
+      - Верно
+      - Правильно
+      - Согласен
+      - Да, всё так
+      - Угу
+      - Ага
 
-- intent: bot_challenge
-  examples: |
-    - are you a bot?
-    - are you a human?
-    - am I talking to a bot?
-    - am I talking to a human?
+  - intent: deny
+    examples: |
+      - Нет
+      - Не совсем
+      - Не уверен
+      - Нет, не так
+      - Не то
+      - Нет, давай по-другому
+
+  - intent: goodbye
+    examples: |
+      - Пока
+      - До свидания
+      - Спасибо, пока
+      - Удачи
+      - Всего хорошего
+      - Спасибо за помощь
+
+  - intent: bot_challenge
+    examples: |
+      - Ты бот?
+      - Ты человек или бот?
+      - С кем я разговариваю?
+      - Это бот отвечает?
+
+  - intent: out_of_scope
+    examples: |
+      - Какая погода завтра?
+      - Как дела?
+      - Расскажи анекдот
+      - Сколько сейчас времени?
+      - Кто выиграл чемпионат?

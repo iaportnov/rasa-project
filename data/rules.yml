@@ -2,12 +2,39 @@ version: "3.1"
 
 rules:
 
-- rule: Say goodbye anytime the user says goodbye
-  steps:
-  - intent: goodbye
-  - action: utter_goodbye
+  # 1. Старт формы
+  - rule: Приветствие → запуск формы
+    steps:
+      - intent: greet
+      - action: utter_greet
+      - action: screening_form
+      - active_loop: screening_form
 
-- rule: Say 'I am a bot' anytime the user challenges
-  steps:
-  - intent: bot_challenge
-  - action: utter_iamabot
+  # 2. Пользователь сразу назвал позицию
+  - rule: inform_position → запуск формы
+    steps:
+      - intent: inform_position
+      - action: screening_form
+      - active_loop: screening_form
+
+  # 3. Главное правило — обработка inform_position ВНУТРИ формы
+  - rule: inform_position внутри формы
+    condition:
+      - active_loop: screening_form
+    steps:
+      - intent: inform_position
+      - action: screening_form
+      - active_loop: screening_form
+
+  # 4. Fallback
+  - rule: Fallback out_of_scope
+    steps:
+      - intent: out_of_scope
+      - action: utter_out_of_scope
+
+  # 5. Завершение разговора
+  - rule: goodbye
+    steps:
+      - intent: goodbye
+      - action: utter_goodbye
+      - active_loop: null

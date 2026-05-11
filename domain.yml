@@ -2,33 +2,104 @@ version: "3.1"
 
 intents:
   - greet
-  - goodbye
+  - inform_position
+  - inform_experience
+  - inform_skills
+  - inform_salary
   - affirm
   - deny
-  - mood_great
-  - mood_unhappy
+  - goodbye
   - bot_challenge
+  - out_of_scope
+
+entities:
+  - position
+  - years_experience
+  - expected_salary
+
+slots:
+  position:
+    type: categorical
+    values:
+      - project_manager
+      - data_analyst
+      - data_engineer
+      - data_scientist
+      - mlops_engineer
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: position
+
+  years_experience:
+    type: float
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: years_experience
+
+  key_skills:
+    type: list
+    influence_conversation: true
+    mappings:
+      - type: from_text
+
+  expected_salary:
+    type: float
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: expected_salary
+
+  screening_complete:
+    type: bool
+    influence_conversation: false
+    mappings:
+      - type: from_text
 
 responses:
   utter_greet:
-  - text: "Hey! How are you?"
+    - text: "Привет! Я HR-бот, который помогает проводить скрининг в ML-команду."
 
-  utter_cheer_up:
-  - text: "Here is something to cheer you up:"
-    image: "https://i.imgur.com/nGF1K8f.jpg"
+  utter_ask_position:
+    - text: "На какую позицию хочешь устроиться?"
+      buttons:
+        - title: "Project Manager"
+          payload: /inform_position
+        - title: "Data Analyst"
+          payload: /inform_position
+        - title: "Data Engineer"
+          payload: /inform_position
+        - title: "Data Scientist"
+          payload: /inform_position
+        - title: "MLOps Engineer"
+          payload: /inform_position
 
-  utter_did_that_help:
-  - text: "Did that help you?"
+  utter_ask_experience:
+    - text: "Сколько лет у тебя опыта в IT/ML?"
 
-  utter_happy:
-  - text: "Great, carry on!"
+  utter_ask_skills:
+    - text: "Какие у тебя ключевые навыки? Перечисли через запятую (например: python, pytorch, sql, docker)"
+
+  utter_ask_salary:
+    - text: "Какая у тебя ожидаемая зарплата? (в рублях)"
 
   utter_goodbye:
-  - text: "Bye"
+    - text: "Спасибо за интервью! Сейчас дам тебе обратную связь."
 
-  utter_iamabot:
-  - text: "I am a bot, powered by Rasa."
+  utter_out_of_scope:
+    - text: "Хм, не совсем понял тебя. Можешь сказать по-другому?"
 
-session_config:
-  session_expiration_time: 60
-  carry_over_slots_to_new_session: true
+  utter_please_rephrase:
+    - text: "Не совсем понял. Можешь сказать иначе?"
+
+actions:
+  - action_evaluate_candidate
+
+forms:
+  screening_form:
+    required_slots:
+      - position
+      - years_experience
+      - key_skills
+      - expected_salary

@@ -1,0 +1,99 @@
+version: "3.1"
+
+stories:
+
+  # ==================== HAPPY PATHS ====================
+
+  - story: 1. Полное успешное интервью через форму
+    steps:
+      - intent: greet
+      - action: utter_greet
+      - action: screening_form
+      - active_loop: screening_form
+      - active_loop: null
+      - action: action_evaluate_candidate
+      - action: utter_goodbye
+
+  - story: 2. Пользователь сразу назвал позицию
+    steps:
+      - intent: inform_position
+      - action: screening_form
+      - active_loop: screening_form
+      - active_loop: null
+      - action: action_evaluate_candidate
+      - action: utter_goodbye
+
+  - story: 3. Пользователь подтверждает все данные
+    steps:
+      - intent: greet
+      - action: utter_greet
+      - action: screening_form
+      - active_loop: screening_form
+      - intent: affirm
+      - action: screening_form
+      - active_loop: null
+      - action: action_evaluate_candidate
+      - action: utter_goodbye
+
+  - story: 4. Короткий happy path
+    steps:
+      - intent: inform_position
+      - action: screening_form
+      - active_loop: screening_form
+      - intent: inform_skills
+      - action: screening_form
+      - active_loop: null
+      - action: action_evaluate_candidate
+      - action: utter_goodbye
+
+  # ==================== UNHAPPY PATHS ====================
+
+  - story: 5. Пользователь сказал "пока" во время интервью
+    steps:
+      - intent: greet
+      - action: utter_greet
+      - action: screening_form
+      - active_loop: screening_form
+      - intent: goodbye
+      - action: utter_goodbye
+      - active_loop: null
+
+  - story: 6. Пользователь отказывается от данных (deny)
+    steps:
+      - intent: greet
+      - action: utter_greet
+      - action: screening_form
+      - active_loop: screening_form
+      - intent: deny
+      - action: screening_form
+      - active_loop: null
+      - action: action_evaluate_candidate
+      - action: utter_goodbye
+
+  - story: 7. Бот не понял сообщение (out_of_scope)
+    steps:
+      - intent: greet
+      - action: utter_greet
+      - action: screening_form
+      - active_loop: screening_form
+      - intent: out_of_scope
+      - action: utter_out_of_scope
+      - intent: inform_skills
+      - action: screening_form
+      - active_loop: null
+      - action: action_evaluate_candidate
+      - action: utter_goodbye
+
+  - story: 8. Пользователь спросил "ты бот?"
+    steps:
+      - intent: greet
+      - action: utter_greet
+      - action: screening_form
+      - active_loop: screening_form
+      - intent: bot_challenge
+      - action: utter_please_rephrase
+      - intent: inform_position
+      - action: screening_form
+      - active_loop: null
+      - action: action_evaluate_candidate
+      - action: utter_goodbye
