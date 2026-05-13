@@ -4,113 +4,286 @@ from rasa_sdk import Action, Tracker
 from rasa_sdk.executor import CollectingDispatcher
 
 
-ROLE_REQUIREMENTS = {
+# Структура навыков по ролям:
+# - critical: критические навыки, без которых роль не подходит (суммарно 30-35 баллов)
+# - main: основные навыки, must have (суммарно 50 баллов)
+# - additional: дополнительные навыки, nice to have (суммарно 15-20 баллов)
+# Суммарный максимум по роли = 100 баллов
+ROLE_SKILLS = {
     "Менеджер проекта": {
-        "agile": 2,
-        "scrum": 2,
-        "kanban": 1,
-        "jira": 1,
-        "confluence": 1,
-        "управление проектами": 2,
-        "проектное управление": 2,
-        "управление командой": 2,
-        "коммуникация": 2,
-        "коммуникация с бизнесом": 2,
-        "планирование": 1,
-        "постановка задач": 1,
-        "работа с заказчиком": 1,
-        "управление сроками": 1,
+        "critical": {
+            "project_management": 12,
+            "stakeholder_management": 10,
+            "agile_scrum": 8,
+        },
+        "main": {
+            "jira": 7,
+            "risk_management": 7,
+            "roadmap_planning": 7,
+            "team_leadership": 7,
+            "business_analysis": 6,
+            "confluence": 5,
+            "budgeting": 5,
+            "ml_project_lifecycle": 6,
+        },
+        "additional": {
+            "kanban": 3,
+            "miro": 3,
+            "sql": 4,
+            "product_metrics": 4,
+            "presentation_skills": 3,
+            "english": 3,
+        },
     },
 
     "Дата-аналитик": {
-        "sql": 2,
-        "python": 2,
-        "pandas": 1,
-        "numpy": 1,
-        "excel": 1,
-        "power bi": 1,
-        "tableau": 1,
-        "datalens": 1,
-        "superset": 1,
-        "статистика": 2,
-        "a/b testing": 2,
-        "a/b тесты": 2,
-        "аб тесты": 2,
-        "ab тесты": 2,
-        "метрики": 2,
-        "продуктовые метрики": 2,
-        "дашборды": 1,
-        "визуализация данных": 1,
-        "анализ данных": 2,
-        "продуктовая аналитика": 2,
+        "critical": {
+            "sql": 15,
+            "python": 10,
+            "pandas": 10,
+        },
+        "main": {
+            "statistics": 8,
+            "data_visualization": 7,
+            "tableau": 5,
+            "power_bi": 5,
+            "numpy": 4,
+            "ab_testing": 7,
+            "excel": 4,
+            "matplotlib": 4,
+            "seaborn": 3,
+            "product_metrics": 3,
+        },
+        "additional": {
+            "airflow": 3,
+            "clickhouse": 3,
+            "superset": 2,
+            "dbt": 3,
+            "jupyter": 2,
+            "git": 2,
+        },
     },
 
     "Дата-инженер": {
-        "sql": 2,
-        "python": 2,
-        "scala": 2,
-        "java": 1,
-        "etl": 2,
-        "elt": 2,
-        "airflow": 2,
-        "spark": 2,
-        "hadoop": 2,
-        "kafka": 2,
-        "dwh": 1,
-        "data lake": 1,
-        "greenplum": 1,
-        "clickhouse": 1,
-        "postgresql": 1,
-        "хранилище данных": 1,
-        "пайплайны данных": 2,
-        "базы данных": 1,
-        "инженерия данных": 2,
+        "critical": {
+            "sql": 12,
+            "python": 12,
+            "etl": 11,
+        },
+        "main": {
+            "airflow": 8,
+            "spark": 8,
+            "kafka": 7,
+            "postgresql": 5,
+            "clickhouse": 5,
+            "hadoop": 4,
+            "docker": 5,
+            "data_warehousing": 4,
+            "dbt": 4,
+        },
+        "additional": {
+            "linux": 3,
+            "bash": 2,
+            "greenplum": 2,
+            "nosql": 3,
+            "git": 2,
+            "cicd": 3,
+        },
     },
 
     "Дата-сайентист": {
-        "python": 2,
-        "pandas": 1,
-        "numpy": 1,
-        "sklearn": 2,
-        "scikit-learn": 2,
-        "catboost": 2,
-        "xgboost": 2,
-        "lightgbm": 2,
-        "machine learning": 2,
-        "ml": 2,
-        "машинное обучение": 2,
-        "глубокое обучение": 1,
-        "deep learning": 1,
-        "nlp": 1,
-        "computer vision": 1,
-        "компьютерное зрение": 1,
-        "статистика": 1,
-        "математическая статистика": 1,
-        "модели": 2,
-        "ml-модели": 2,
-        "обучение моделей": 2,
+        "critical": {
+            "python": 12,
+            "machine_learning": 13,
+            "statistics": 10,
+        },
+        "main": {
+            "pandas": 5,
+            "numpy": 4,
+            "scikit_learn": 7,
+            "pytorch": 6,
+            "tensorflow": 5,
+            "sql": 5,
+            "deep_learning": 6,
+            "nlp": 4,
+            "computer_vision": 4,
+            "xgboost": 4,
+        },
+        "additional": {
+            "mlflow": 3,
+            "jupyter": 2,
+            "git": 2,
+            "matplotlib": 2,
+            "catboost": 3,
+            "hugging_face": 3,
+        },
     },
 
     "MLOps-инженер": {
-        "python": 1,
-        "docker": 2,
-        "kubernetes": 2,
-        "ci/cd": 2,
-        "cicd": 2,
-        "mlflow": 2,
-        "dvc": 2,
-        "linux": 1,
-        "prometheus": 1,
-        "grafana": 1,
-        "мониторинг": 1,
-        "monitoring": 1,
-        "deployment": 2,
-        "деплой": 2,
-        "развертывание моделей": 2,
-        "инфраструктура": 1,
-        "mlops": 2,
-        "production": 1,
+        "critical": {
+            "python": 10,
+            "docker": 13,
+            "kubernetes": 12,
+        },
+        "main": {
+            "cicd": 8,
+            "mlflow": 7,
+            "airflow": 5,
+            "linux": 5,
+            "bash": 4,
+            "aws": 5,
+            "terraform": 4,
+            "monitoring": 6,
+            "git": 3,
+            "model_serving": 3,
+        },
+        "additional": {
+            "gitlab_ci": 3,
+            "prometheus": 3,
+            "grafana": 2,
+            "kubeflow": 3,
+            "jenkins": 2,
+            "ansible": 2,
+        },
     },
+}
+
+
+# Синонимы навыков: разговорные варианты -> канонические названия
+SKILL_SYNONYMS = {
+    # Языки и базовые
+    "питон": "python",
+    "пайтон": "python",
+    "py": "python",
+    "скл": "sql",
+    "эскюэль": "sql",
+    "пандас": "pandas",
+    "панды": "pandas",
+    "нампай": "numpy",
+    "намп": "numpy",
+    "эксель": "excel",
+    "скала": "scala",
+    "ява": "java",
+
+    # ML фреймворки
+    "торч": "pytorch",
+    "пайторч": "pytorch",
+    "тензорфлоу": "tensorflow",
+    "тф": "tensorflow",
+    "склерн": "scikit_learn",
+    "sklearn": "scikit_learn",
+    "scikit-learn": "scikit_learn",
+    "кэтбуст": "catboost",
+    "хгбуст": "xgboost",
+    "лайтгбм": "lightgbm",
+    "хаггинг": "hugging_face",
+    "huggingface": "hugging_face",
+    "hugging face": "hugging_face",
+
+    # ML понятия
+    "ml": "machine_learning",
+    "мл": "machine_learning",
+    "машинное обучение": "machine_learning",
+    "дл": "deep_learning",
+    "глубокое обучение": "deep_learning",
+    "нлп": "nlp",
+    "обработка естественного языка": "nlp",
+    "cv": "computer_vision",
+    "компьютерное зрение": "computer_vision",
+    "статистика": "statistics",
+    "матстат": "statistics",
+    "ab-тесты": "ab_testing",
+    "ab тесты": "ab_testing",
+    "аб тесты": "ab_testing",
+    "a/b testing": "ab_testing",
+
+    # BI и визуализация
+    "повер би": "power_bi",
+    "powerbi": "power_bi",
+    "power bi": "power_bi",
+    "табло": "tableau",
+    "matplotlib": "matplotlib",
+    "матплотлиб": "matplotlib",
+    "сиборн": "seaborn",
+    "визуализация": "data_visualization",
+    "визуализация данных": "data_visualization",
+    "дашборды": "data_visualization",
+    "продуктовые метрики": "product_metrics",
+    "метрики": "product_metrics",
+
+    # Data Engineering
+    "эирфлоу": "airflow",
+    "аирфлоу": "airflow",
+    "спарк": "spark",
+    "кафка": "kafka",
+    "хадуп": "hadoop",
+    "постгрес": "postgresql",
+    "постгря": "postgresql",
+    "клик": "clickhouse",
+    "кликхаус": "clickhouse",
+    "хранилище данных": "data_warehousing",
+    "dwh": "data_warehousing",
+    "пайплайны": "etl",
+    "пайплайны данных": "etl",
+    "elt": "etl",
+
+    # MLOps / DevOps
+    "докер": "docker",
+    "кубер": "kubernetes",
+    "k8s": "kubernetes",
+    "кубернетес": "kubernetes",
+    "ci/cd": "cicd",
+    "ci-cd": "cicd",
+    "сицд": "cicd",
+    "млфлоу": "mlflow",
+    "линукс": "linux",
+    "баш": "bash",
+    "терраформ": "terraform",
+    "мониторинг": "monitoring",
+    "прометей": "prometheus",
+    "прометеус": "prometheus",
+    "графана": "grafana",
+    "дженкинс": "jenkins",
+    "гитлаб": "gitlab_ci",
+    "гит": "git",
+    "ансибл": "ansible",
+    "деплой": "model_serving",
+    "развертывание моделей": "model_serving",
+
+    # PM
+    "agile": "agile_scrum",
+    "scrum": "agile_scrum",
+    "аджайл": "agile_scrum",
+    "скрам": "agile_scrum",
+    "канбан": "kanban",
+    "джира": "jira",
+    "конфлюенс": "confluence",
+    "управление проектами": "project_management",
+    "проектное управление": "project_management",
+    "управление командой": "team_leadership",
+    "лидерство": "team_leadership",
+    "работа с заказчиком": "stakeholder_management",
+    "коммуникация с бизнесом": "stakeholder_management",
+    "управление стейкхолдерами": "stakeholder_management",
+    "управление рисками": "risk_management",
+    "роадмап": "roadmap_planning",
+    "планирование": "roadmap_planning",
+    "бюджетирование": "budgeting",
+    "бизнес-анализ": "business_analysis",
+    "ml-проекты": "ml_project_lifecycle",
+    "английский": "english",
+    "презентация": "presentation_skills",
+}
+
+
+# Зарплатные вилки по ролям (в тыс. руб.) для разных уровней опыта
+# Формат: (junior_max, middle_max, senior_max)
+SALARY_RANGES = {
+    "Менеджер проекта": (180, 280, 400),
+    "Дата-аналитик": (150, 250, 350),
+    "Дата-инженер": (180, 300, 450),
+    "Дата-сайентист": (180, 320, 500),
+    "MLOps-инженер": (200, 320, 450),
 }
 
 
@@ -118,6 +291,7 @@ ROLE_SYNONYMS = {
     # Дата-аналитик
     "дата-аналитик": "Дата-аналитик",
     "дата аналитик": "Дата-аналитик",
+    "аналитик": "Дата-аналитик",
     "аналитик данных": "Дата-аналитик",
     "продуктовый аналитик": "Дата-аналитик",
     "bi-аналитик": "Дата-аналитик",
@@ -127,6 +301,7 @@ ROLE_SYNONYMS = {
     # Дата-сайентист
     "дата-сайентист": "Дата-сайентист",
     "дата сайентист": "Дата-сайентист",
+    "сайентист": "Дата-сайентист",
     "data scientist": "Дата-сайентист",
     "специалист по машинному обучению": "Дата-сайентист",
     "ml-специалист": "Дата-сайентист",
@@ -142,6 +317,7 @@ ROLE_SYNONYMS = {
     # Менеджер проекта
     "менеджер проекта": "Менеджер проекта",
     "проектный менеджер": "Менеджер проекта",
+    "проджект": "Менеджер проекта",
     "проджект менеджер": "Менеджер проекта",
     "project manager": "Менеджер проекта",
     "pm": "Менеджер проекта",
@@ -157,10 +333,9 @@ ROLE_SYNONYMS = {
 
 def normalize_skills(skills):
     """
-    Приводит навыки к единому формату:
-    - если навыков нет, возвращает пустой список;
-    - если пришла одна строка, превращает её в список;
-    - приводит всё к нижнему регистру.
+    Приводит навыки к каноническому формату:
+    - lowercase + strip
+    - применяет SKILL_SYNONYMS для приведения к стандартным названиям
     """
     if not skills:
         return []
@@ -168,146 +343,257 @@ def normalize_skills(skills):
     if isinstance(skills, str):
         skills = [skills]
 
-    return [skill.lower().strip() for skill in skills]
+    normalized = []
+    for skill in skills:
+        s = str(skill).lower().strip()
+        canonical = SKILL_SYNONYMS.get(s, s)
+        normalized.append(canonical)
+
+    return normalized
 
 
 def normalize_role(role):
-    """
-    Приводит разные варианты названия роли к единому стандарту.
-    Например: 'аналитик данных', 'дата-аналитик', 'Data Analyst'
-    превращаются в 'Дата-аналитик'.
-    """
+    """Приводит варианты названия роли к единому стандарту."""
     if not role:
         return None
-
     role = str(role).lower().strip()
     return ROLE_SYNONYMS.get(role, role)
 
 
-def calculate_scores(skills, experience_years):
+def get_all_role_skills(role):
+    """Возвращает плоский словарь всех навыков роли с их баллами."""
+    skills_data = ROLE_SKILLS[role]
+    all_skills = {}
+    all_skills.update(skills_data["critical"])
+    all_skills.update(skills_data["main"])
+    all_skills.update(skills_data["additional"])
+    return all_skills
+
+
+def calculate_role_score(role, candidate_skills):
     """
-    Считает баллы кандидата по каждой роли.
-    Баллы начисляются за совпадение навыков и за опыт работы.
+    Считает балл кандидата по конкретной роли.
+    Возвращает кортеж: (итоговый балл, критических_набрано, критических_всего, отсутствующие_критические)
     """
-    scores = {role: 0 for role in ROLE_REQUIREMENTS}
-    normalized_skills = normalize_skills(skills)
+    skills_data = ROLE_SKILLS[role]
+    critical_skills = skills_data["critical"]
+    all_skills = get_all_role_skills(role)
 
-    for role, requirements in ROLE_REQUIREMENTS.items():
-        for skill in normalized_skills:
-            if skill in requirements:
-                scores[role] += requirements[skill]
+    candidate_skills_set = set(candidate_skills)
 
-    try:
-        experience_years = float(experience_years)
-    except (TypeError, ValueError):
-        experience_years = 0
+    # Сумма баллов за все совпавшие навыки
+    raw_score = 0
+    for skill in candidate_skills_set:
+        if skill in all_skills:
+            raw_score += all_skills[skill]
 
-    if experience_years >= 1:
-        for role in scores:
-            scores[role] += 1
+    # Подсчёт критических: сколько баллов из критических набрано
+    critical_total = sum(critical_skills.values())
+    critical_obtained = sum(
+        points for skill, points in critical_skills.items()
+        if skill in candidate_skills_set
+    )
 
-    if experience_years >= 3:
-        for role in scores:
-            scores[role] += 1
+    # Отсутствующие критические навыки
+    missing_critical = [
+        skill for skill in critical_skills
+        if skill not in candidate_skills_set
+    ]
 
-    return scores
+    # Штраф за критические: если набрано меньше 50% от критических баллов - штраф x0.5
+    critical_coverage = critical_obtained / critical_total if critical_total > 0 else 1
+    if critical_coverage < 0.5:
+        final_score = raw_score * 0.5
+    else:
+        final_score = raw_score
+
+    return final_score, critical_obtained, critical_total, missing_critical
 
 
-def analyze_salary(salary_expectation, experience_years):
+def apply_salary_penalty(score, role, salary_expectation, experience_years):
     """
-    Анализирует зарплатные ожидания кандидата.
-    Зарплата не выбирает роль напрямую, но добавляется в финальный комментарий.
+    Корректирует балл по роли с учётом зарплатных ожиданий.
+    Если кандидат просит больше senior-вилки роли - штраф -10 баллов.
+    Если попадает в нужную вилку по опыту - бонус +3.
     """
     try:
         salary = float(salary_expectation)
     except (TypeError, ValueError):
-        return "Зарплатные ожидания не были указаны достаточно понятно."
+        return score, "не указана"
+
+    # Если зарплата пришла в рублях (большое число), переводим в тысячи
+    if salary > 10000:
+        salary = salary / 1000
 
     try:
-        experience = float(experience_years)
+        exp = float(experience_years)
     except (TypeError, ValueError):
-        experience = 0
+        exp = 0
 
-    if salary <= 150000:
-        return "Ваши зарплатные ожидания выглядят реалистично для junior-специалиста или начинающего middle-уровня."
+    junior_max, middle_max, senior_max = SALARY_RANGES[role]
 
-    if 150000 < salary <= 250000:
-        return "Ваши зарплатные ожидания выглядят реалистично для middle-специалиста."
+    # Определяем ожидаемый уровень кандидата по опыту
+    if exp < 1:
+        expected_max = junior_max
+        level = "junior"
+    elif exp < 3:
+        expected_max = middle_max
+        level = "middle"
+    else:
+        expected_max = senior_max
+        level = "senior"
 
-    if 250000 < salary <= 350000:
-        if experience >= 3:
-            return "Ваши зарплатные ожидания достаточно высокие, но могут быть обоснованы вашим уровнем опыта."
-        return "Ваши зарплатные ожидания выглядят довольно высокими для текущего уровня опыта."
+    # Штраф если просит сильно больше своей вилки
+    if salary > expected_max * 1.2:
+        return max(0, score - 10), f"завышены для {level}"
 
-    return "Ваши зарплатные ожидания очень высокие, поэтому рекрутеру может понадобиться дополнительное подтверждение вашего опыта и навыков."
+    # Бонус если попадает в свою вилку
+    if salary <= expected_max:
+        return score + 3, f"адекватны для {level}"
+
+    return score, f"немного выше {level}-вилки"
+
+
+def calculate_all_scores(skills, experience_years, salary_expectation):
+    """
+    Считает баллы по всем ролям с учётом зарплаты и опыта.
+    Возвращает dict {роль: {score, critical_obtained, critical_total, missing_critical, salary_note}}
+    """
+    normalized_skills = normalize_skills(skills)
+
+    try:
+        exp = float(experience_years)
+    except (TypeError, ValueError):
+        exp = 0
+
+    # Бонус за опыт: +2 за 1+ лет, +5 за 3+ лет (умеренно, чтобы не перебить навыки)
+    if exp >= 3:
+        exp_bonus = 5
+    elif exp >= 1:
+        exp_bonus = 2
+    else:
+        exp_bonus = 0
+
+    results = {}
+    for role in ROLE_SKILLS:
+        score, crit_obt, crit_total, missing = calculate_role_score(role, normalized_skills)
+        score += exp_bonus
+        score, salary_note = apply_salary_penalty(score, role, salary_expectation, exp)
+        score = min(100, max(0, round(score)))
+
+        results[role] = {
+            "score": score,
+            "critical_obtained": crit_obt,
+            "critical_total": crit_total,
+            "missing_critical": missing,
+            "salary_note": salary_note,
+        }
+
+    return results
+
+
+def get_skills_to_improve(role, candidate_skills, top_n=5):
+    """Возвращает список главных навыков, которых не хватает кандидату для роли."""
+    candidate_set = set(candidate_skills)
+    all_skills = get_all_role_skills(role)
+
+    missing = [
+        (skill, points) for skill, points in all_skills.items()
+        if skill not in candidate_set
+    ]
+    missing.sort(key=lambda x: -x[1])
+
+    return [skill for skill, _ in missing[:top_n]]
 
 
 def compare_desired_and_best_role(desired_role, best_role):
-    """
-    Сравнивает роль, которую указал кандидат, с ролью,
-    которую бот выбрал по навыкам и опыту.
-    """
+    """Сравнивает желаемую роль с лучшей по скорингу."""
     if not desired_role:
-        return "Вы не указали желаемую роль, поэтому рекомендация построена только на ваших навыках и опыте."
+        return "Желаемая роль не указана, рекомендация построена по навыкам и опыту."
 
     if desired_role == best_role:
         return f"Вы указали роль «{desired_role}», и она совпадает с нашей рекомендацией."
 
-    if desired_role in ROLE_REQUIREMENTS:
+    if desired_role in ROLE_SKILLS:
         return (
-            f"Вы указали роль «{desired_role}», но по вашим навыкам и опыту "
-            f"больше подходит роль «{best_role}»."
+            f"Вы указали роль «{desired_role}», но по навыкам и опыту больше подходит «{best_role}»."
         )
 
     return (
-        f"Вы указали роль «{desired_role}», но бот не смог однозначно сопоставить её "
-        f"с одной из стандартных ролей. Поэтому итоговая рекомендация построена по навыкам и опыту."
+        f"Вы указали роль «{desired_role}», но бот не смог сопоставить её "
+        f"с одной из стандартных ролей. Рекомендация построена по навыкам."
     )
 
 
-def build_feedback(best_role, best_score, scores, salary_comment, role_comment):
-    """
-    Формирует итоговый ответ для кандидата.
-    """
-    if best_score >= 7:
+def build_feedback(results, normalized_skills, desired_role, role_comment):
+    """Формирует итоговый ответ для кандидата."""
+    best_role = max(results, key=lambda r: results[r]["score"])
+    best_score = results[best_role]["score"]
+    best_data = results[best_role]
+
+    # Определяем общий вердикт
+    if best_score >= 70:
+        decision = f"🏆 Отлично подходишь на роль «{best_role}» — {best_score} баллов"
         level = "высокий"
-        decision = f"Вы хорошо подходите на роль «{best_role}»."
-    elif best_score >= 4:
+    elif best_score >= 45:
+        decision = f"✅ Подходишь на роль «{best_role}» — {best_score} баллов"
         level = "средний"
-        decision = f"Вы частично подходите на роль «{best_role}»."
+    elif best_score >= 25:
+        decision = f"⚠️ Частично подходишь на роль «{best_role}» — {best_score} баллов"
+        level = "ниже среднего"
     else:
+        decision = "❌ К сожалению, пока не подходишь ни на одну из ролей в ML-команде"
         level = "низкий"
-        decision = "На данный момент вы не полностью подходите ни на одну из ролей в ML-команде."
 
-    score_details = "\n".join(
-        [f"- {role}: {score} баллов" for role, score in scores.items()]
-    )
+    # Детализация по всем ролям
+    score_lines = []
+    for role, data in sorted(results.items(), key=lambda x: -x[1]["score"]):
+        score_lines.append(f"• {role}: {data['score']} баллов")
+    score_details = "\n".join(score_lines)
 
-    if best_score >= 4:
-        recommendation = (
-            f"Больше всего вам подходит роль «{best_role}». "
-            "Чтобы усилить профиль, стоит развивать недостающие технические и практические навыки для этой роли."
+    # Критические навыки для лучшей роли
+    if best_data["missing_critical"]:
+        critical_note = (
+            f"⚠️ Не хватает критических навыков: {', '.join(best_data['missing_critical'])}"
         )
     else:
-        recommendation = (
-            "Рекомендуем начать с базовых навыков: SQL, Python, статистика, "
-            "анализ данных или управление проектами — в зависимости от выбранного карьерного направления."
-        )
+        critical_note = "✅ Все критические навыки в порядке"
 
-    return (
-        f"{decision}\n\n"
-        f"Уровень соответствия: {level}\n\n"
-        f"Комментарий по желаемой роли: {role_comment}\n\n"
-        f"Баллы по ролям:\n{score_details}\n\n"
-        f"Анализ зарплатных ожиданий: {salary_comment}\n\n"
-        f"Рекомендация: {recommendation}"
+    # Что подкачать
+    to_improve = get_skills_to_improve(best_role, normalized_skills, top_n=5)
+    improve_note = (
+        f"🔧 Подкачать для роли «{best_role}»: {', '.join(to_improve)}"
+        if to_improve else ""
     )
+
+    # Комментарий по зарплате
+    salary_note = f"💰 Зарплатные ожидания: {best_data['salary_note']}"
+
+    parts = [
+        decision,
+        "",
+        f"Уровень соответствия: {level}",
+        "",
+        f"Баллы по всем ролям:\n{score_details}",
+        "",
+        critical_note,
+        salary_note,
+    ]
+
+    if improve_note:
+        parts.append(improve_note)
+
+    parts.append("")
+    parts.append(role_comment)
+
+    return "\n".join(parts)
 
 
 class ActionEvaluateCandidate(Action):
     """
-    Кастомное действие RASA.
-    Получает данные из слотов, считает баллы и отправляет кандидату итоговую рекомендацию.
+    Кастомное действие RASA: получает данные из слотов,
+    считает баллы по всем ролям с учётом навыков, опыта и зарплаты,
+    отправляет кандидату итоговую рекомендацию.
     """
 
     def name(self) -> Text:
@@ -326,22 +612,14 @@ class ActionEvaluateCandidate(Action):
         desired_role = tracker.get_slot("desired_role")
 
         desired_role = normalize_role(desired_role)
+        normalized_skills = normalize_skills(skills)
 
-        scores = calculate_scores(skills, experience_years)
+        results = calculate_all_scores(skills, experience_years, salary_expectation)
 
-        best_role = max(scores, key=scores.get)
-        best_score = scores[best_role]
-
-        salary_comment = analyze_salary(salary_expectation, experience_years)
+        best_role = max(results, key=lambda r: results[r]["score"])
         role_comment = compare_desired_and_best_role(desired_role, best_role)
 
-        feedback = build_feedback(
-            best_role=best_role,
-            best_score=best_score,
-            scores=scores,
-            salary_comment=salary_comment,
-            role_comment=role_comment,
-        )
+        feedback = build_feedback(results, normalized_skills, desired_role, role_comment)
 
         dispatcher.utter_message(text=feedback)
 
