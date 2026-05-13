@@ -400,10 +400,9 @@ def calculate_role_score(role, candidate_skills):
         if skill not in candidate_skills_set
     ]
 
-    # Штраф за критические: если набрано меньше 50% от критических баллов - штраф x0.5
-    critical_coverage = critical_obtained / critical_total if critical_total > 0 else 1
-    if critical_coverage < 0.5:
-        final_score = raw_score * 0.5
+    # Hard-cutoff: если не покрыт хотя бы один критический навык - роль выпадает
+    if missing_critical:
+        final_score = 0
     else:
         final_score = raw_score
 
@@ -477,8 +476,14 @@ def calculate_all_scores(skills, experience_years, salary_expectation):
     results = {}
     for role in ROLE_SKILLS:
         score, crit_obt, crit_total, missing = calculate_role_score(role, normalized_skills)
-        score += exp_bonus
-        score, salary_note = apply_salary_penalty(score, role, salary_expectation, exp)
+
+        # Если роль провалила cutoff по критическим - не начисляем бонусы
+        if score == 0:
+            salary_note = "не учитывается"
+        else:
+            score += exp_bonus
+            score, salary_note = apply_salary_penalty(score, role, salary_expectation, exp)
+
         score = min(100, max(0, round(score)))
 
         results[role] = {
@@ -511,10 +516,10 @@ def compare_desired_and_best_role(desired_role, best_role):
     if not desired_role:
         return "Желаемая роль не указана, рекомендация построена по навыкам и опыту."
 
-    if desired_role == best_role:
-        return f"Вы указали роль «{desired_role}», и она совпадает с нашей рекомендацией."
-
+    # desired_role уже нормализована перед вызовом - проверяем, попала ли в стандартные роли
     if desired_role in ROLE_SKILLS:
+        if desired_role == best_role:
+            return f"Вы указали роль «{desired_role}», и она совпадает с нашей рекомендацией."
         return (
             f"Вы указали роль «{desired_role}», но по навыкам и опыту больше подходит «{best_role}»."
         )
@@ -531,6 +536,23 @@ def build_feedback(results, normalized_skills, desired_role, role_comment):
     best_score = results[best_role]["score"]
     best_data = results[best_role]
 
+    # Если ни одна роль не прошла cutoff - кандидат не подходит вовсе
+    if best_score == 0:
+        score_lines = []
+        for role, data in results.items():
+            missing = ", ".join(data["missing_critical"])
+            score_lines.append(f"• {role}: не хватает критических навыков ({missing})")
+        score_details = "\n".join(score_lines)
+
+        return (
+            "❌ К сожалению, вы не подходите ни на одну из ролей в ML-команде — "
+            "не покрыты критические навыки.\n\n"
+            f"Что не хватает по каждой роли:\n{score_details}\n\n"
+            "Рекомендуем начать с базовых навыков выбранного направления "
+            "(SQL, Python, статистика, основы ML или управление проектами).\n\n"
+            f"{role_comment}"
+        )
+
     # Определяем общий вердикт
     if best_score >= 70:
         decision = f"🏆 Отлично подходишь на роль «{best_role}» — {best_score} баллов"
@@ -538,26 +560,19 @@ def build_feedback(results, normalized_skills, desired_role, role_comment):
     elif best_score >= 45:
         decision = f"✅ Подходишь на роль «{best_role}» — {best_score} баллов"
         level = "средний"
-    elif best_score >= 25:
+    else:
         decision = f"⚠️ Частично подходишь на роль «{best_role}» — {best_score} баллов"
         level = "ниже среднего"
-    else:
-        decision = "❌ К сожалению, пока не подходишь ни на одну из ролей в ML-команде"
-        level = "низкий"
 
     # Детализация по всем ролям
     score_lines = []
     for role, data in sorted(results.items(), key=lambda x: -x[1]["score"]):
-        score_lines.append(f"• {role}: {data['score']} баллов")
+        if data["score"] == 0:
+            missing = ", ".join(data["missing_critical"])
+            score_lines.append(f"• {role}: не рассматривается (нет: {missing})")
+        else:
+            score_lines.append(f"• {role}: {data['score']} баллов")
     score_details = "\n".join(score_lines)
-
-    # Критические навыки для лучшей роли
-    if best_data["missing_critical"]:
-        critical_note = (
-            f"⚠️ Не хватает критических навыков: {', '.join(best_data['missing_critical'])}"
-        )
-    else:
-        critical_note = "✅ Все критические навыки в порядке"
 
     # Что подкачать
     to_improve = get_skills_to_improve(best_role, normalized_skills, top_n=5)
@@ -576,7 +591,7 @@ def build_feedback(results, normalized_skills, desired_role, role_comment):
         "",
         f"Баллы по всем ролям:\n{score_details}",
         "",
-        critical_note,
+        "✅ Все критические навыки в порядке",
         salary_note,
     ]
 
