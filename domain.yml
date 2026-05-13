@@ -3,32 +3,73 @@ version: "3.1"
 intents:
   - greet
   - goodbye
-  - affirm
-  - deny
-  - mood_great
-  - mood_unhappy
-  - bot_challenge
+  - find_vacancy
+
+entities:
+  - experience_years
+  - skills
+  - salary_expected
+
+slots:
+
+  experience_years:
+    type: float
+    mappings:
+      - type: from_text
+        not_intent:
+          - goodbye
+        conditions:
+          - active_loop: vacancy_form
+            requested_slot: experience_years
+
+  skills:
+    type: list
+    mappings:
+      - type: from_text
+        not_intent:
+          - goodbye
+        conditions:
+          - active_loop: vacancy_form
+            requested_slot: skills
+
+  salary_expected:
+    type: float
+    mappings:
+      - type: from_text
+        not_intent:
+          - goodbye
+        conditions:
+          - active_loop: vacancy_form
+            requested_slot: salary_expected
+
+forms:
+  vacancy_form:
+    required_slots:
+      - experience_years
+      - skills
+      - salary_expected
 
 responses:
+
   utter_greet:
-  - text: "Hey! How are you?"
+    - text: "Здравствуйте! Помогу подобрать вакансию."
 
-  utter_cheer_up:
-  - text: "Here is something to cheer you up:"
-    image: "https://i.imgur.com/nGF1K8f.jpg"
+  utter_ask_experience_years:
+    - text: "Сколько у вас лет опыта?"
 
-  utter_did_that_help:
-  - text: "Did that help you?"
+  utter_ask_skills:
+    - text: "Расскажите о своих навыках и технологиях, с которыми работали"
 
-  utter_happy:
-  - text: "Great, carry on!"
+  utter_ask_salary_expected:
+    - text: "Какая желаемая зарплата? (в тыс. руб.)"
+
+  utter_default:
+    - text: "Не понял сообщение."
 
   utter_goodbye:
-  - text: "Bye"
+    - text: "Хорошо, обращайтесь ещё."
 
-  utter_iamabot:
-  - text: "I am a bot, powered by Rasa."
-
-session_config:
-  session_expiration_time: 60
-  carry_over_slots_to_new_session: true
+actions:
+  - validate_vacancy_form
+  - action_evaluate_candidate
+  - action_show_candidate_data

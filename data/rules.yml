@@ -2,12 +2,40 @@ version: "3.1"
 
 rules:
 
-- rule: Say goodbye anytime the user says goodbye
+- rule: старт формы
   steps:
-  - intent: goodbye
-  - action: utter_goodbye
+    - intent: find_vacancy
+    - action: vacancy_form
+    - active_loop: vacancy_form
 
-- rule: Say 'I am a bot' anytime the user challenges
+- rule: submit формы
+  condition:
+    - active_loop: vacancy_form
   steps:
-  - intent: bot_challenge
-  - action: utter_iamabot
+    - action: vacancy_form
+    - active_loop: null
+    - action: action_evaluate_candidate
+
+- rule: fallback
+  steps:
+    - intent: nlu_fallback
+    - action: utter_default
+
+- rule: greet
+  steps:
+    - intent: greet
+    - action: utter_greet
+
+- rule: stop form
+  condition:
+    - active_loop: vacancy_form
+  steps:
+    - intent: goodbye
+    - action: action_deactivate_loop
+    - active_loop: null
+    - action: utter_goodbye
+
+- rule: goodbye вне формы
+  steps:
+    - intent: goodbye
+    - action: utter_goodbye

@@ -1,4 +1,0 @@
-rasa
-rasa-sdk
-packaging<22.0
-setuptools<70.0.0
