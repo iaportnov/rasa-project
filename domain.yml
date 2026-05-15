@@ -4,40 +4,55 @@ intents:
   - greet
   - goodbye
   - find_vacancy
+  - affirm
+  - deny
+  - stop
 
 entities:
   - experience_years
   - skills
   - salary_expected
+  - preferred_role
 
 slots:
+  skills_accumulated:
+    type: list
+    influence_conversation: false
+    mappings:
+      - type: custom
+
+  preferred_role:
+    type: text
+    influence_conversation: false
+    mappings:
+      - type: from_text
+        conditions:
+          - active_loop: vacancy_form
+            requested_slot: preferred_role
 
   experience_years:
     type: float
+    influence_conversation: false
     mappings:
       - type: from_text
-        not_intent:
-          - goodbye
         conditions:
           - active_loop: vacancy_form
             requested_slot: experience_years
 
   skills:
     type: list
+    influence_conversation: false
     mappings:
       - type: from_text
-        not_intent:
-          - goodbye
         conditions:
           - active_loop: vacancy_form
             requested_slot: skills
 
   salary_expected:
     type: float
+    influence_conversation: false
     mappings:
       - type: from_text
-        not_intent:
-          - goodbye
         conditions:
           - active_loop: vacancy_form
             requested_slot: salary_expected
@@ -45,23 +60,34 @@ slots:
 forms:
   vacancy_form:
     required_slots:
+      - preferred_role
       - experience_years
       - skills
       - salary_expected
 
 responses:
-
   utter_greet:
     - text: "Здравствуйте! Помогу подобрать вакансию."
 
+  utter_ask_preferred_role:
+    - text: |
+        Какая вакансия вас интересует? Выберите из списка:
+        • Менеджер проекта
+        • Дата-аналитик
+        • Дата-инженер
+        • Дата-сайентист
+        • MLOps-инженер
+
+        Или напишите 'любая', если хотите рассмотреть все варианты.
+
   utter_ask_experience_years:
-    - text: "Сколько у вас лет опыта?"
+    - text: "Сколько у вас полных лет опыта в IT?"
 
   utter_ask_skills:
-    - text: "Расскажите о своих навыках и технологиях, с которыми работали"
+    - text: "Какие у вас есть навыки и технологии? (Перечислите их или напишите 'всё', когда закончите)"
 
   utter_ask_salary_expected:
-    - text: "Какая желаемая зарплата? (в тыс. руб.)"
+    - text: "Какая ваша желаемая зарплата? (укажите число в тыс. руб.)"
 
   utter_default:
     - text: "Не понял сообщение."

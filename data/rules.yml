@@ -8,6 +8,13 @@ rules:
     - action: vacancy_form
     - active_loop: vacancy_form
 
+- rule: старт формы при согласии
+  steps:
+    - intent: affirm
+    - action: vacancy_form
+    - active_loop: vacancy_form
+
+
 - rule: submit формы
   condition:
     - active_loop: vacancy_form

@@ -77,8 +77,9 @@ SKILL_SYNONYMS = {
     "confluence": ["конфлюенс", "confluence", "atlassian confluence", "конфлю", "wiki"],
     "budgeting": ["бюджетирование", "budgeting", "бюджет", "budget management", "финансовое планирование"],
 
-    "sql": ["sql", "sequel", "сел", "postgres", "postgresql"],
-    "python": ["питон", "пайтоном", "питончик", "пайтон", "py"],
+    "sql": ["sql", "sequel", "скуль", "скл", "сел", "postgres", "postgresql"],
+    "python": ["питон", "пайтоном", "питончик", "пайтон", "py", "питухон"],
+
     "pandas": ["пандас", "пандой", "пандос", "pandas", "панда"],
     "power_bi": ["power bi", "powerbi", "павер би", "power bi desktop", "би"],
     "tableau": ["tableau", "табло", "tableau desktop", "таблио", "таблу"],
@@ -112,7 +113,17 @@ SKILL_SYNONYMS = {
     "terraform": ["terraform", "терраформ", "iac", "infrastructure as code", "tf"],
 }
 
+# ====================== ЗАРПЛАТНЫЕ ВИЛКИ (в тыс. руб.) ======================
+ROLE_SALARY_RANGES = {
+    "project_manager": {"min": 150, "max": 350},
+    "data_analyst":    {"min": 120, "max": 280},
+    "data_engineer":   {"min": 180, "max": 400},
+    "data_scientist":  {"min": 200, "max": 450},
+    "mlops_engineer":  {"min": 220, "max": 500},
+}
+
 # ====================== РАСШИРЕННЫЕ СВЯЗИ МЕЖДУ НАВЫКАМИ ======================
+
 # Теперь связи гораздо плотнее и логичнее
 skill_to_skill = {
     "python": ["pandas", "numpy", "scikit_learn", "pytorch", "tensorflow", "matplotlib", "seaborn", "xgboost"],
@@ -136,4 +147,4 @@ skill_to_skill = {
     "monitoring": ["docker", "kubernetes", "mlflow"],
 }
 
-__all__ = ["skills_weights", "skill_to_skill", "CRITICAL_SKILLS", "SKILL_SYNONYMS"]
+__all__ = ["skills_weights", "skill_to_skill", "CRITICAL_SKILLS", "SKILL_SYNONYMS", "ROLE_SALARY_RANGES"]

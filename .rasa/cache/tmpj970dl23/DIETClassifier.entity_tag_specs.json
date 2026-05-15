@@ -1,0 +1,36 @@
+[
+  {
+    "tag_name": "entity",
+    "ids_to_tags": {
+      "1": "B-experience_years",
+      "2": "I-experience_years",
+      "3": "L-experience_years",
+      "4": "U-experience_years",
+      "5": "B-salary_expected",
+      "6": "I-salary_expected",
+      "7": "L-salary_expected",
+      "8": "U-salary_expected",
+      "9": "B-skills",
+      "10": "I-skills",
+      "11": "L-skills",
+      "12": "U-skills",
+      "0": "O"
+    },
+    "tags_to_ids": {
+      "B-experience_years": 1,
+      "I-experience_years": 2,
+      "L-experience_years": 3,
+      "U-experience_years": 4,
+      "B-salary_expected": 5,
+      "I-salary_expected": 6,
+      "L-salary_expected": 7,
+      "U-salary_expected": 8,
+      "B-skills": 9,
+      "I-skills": 10,
+      "L-skills": 11,
+      "U-skills": 12,
+      "O": 0
+    },
+    "num_tags": 13
+  }
+]

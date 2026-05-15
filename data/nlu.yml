@@ -24,7 +24,39 @@ nlu:
     - bb
     - до встречи
 
+- intent: affirm
+  examples: |
+    - да
+    - конечно
+    - давай
+    - ок
+    - окей
+    - хорошо
+    - согласен
+    - ага
+
+- intent: deny
+  examples: |
+    - нет
+    - не надо
+    - не хочу
+    - отрицаю
+    - ноу
+
+
+- intent: stop
+  examples: |
+    - всё
+    - все
+    - конец
+    - готово
+    - хватит
+    - это всё
+    - больше нет
+    - закончил
+
 - intent: find_vacancy
+
   examples: |
     - подбери мне вакансию
     - хочу найти работу
@@ -36,3 +68,351 @@ nlu:
     - хочу устроиться
     - хочу подобрать профессию
     - помоги подобрать вакансию
+
+- intent: inform
+  examples: |
+    - мой опыт [5](experience_years) лет
+    - я работал [3](experience_years) года
+    - [1](experience_years) год
+    - опыт [0](experience_years)
+    - знаю [python](skills) и [react](skills)
+    - владею [питоном](skills) и [джавой](skills)
+    - мои навыки: [js](skills), [sql](skills)
+    - разбираюсь в [project management](skills) и [jira](skills)
+    - умею [etl](skills) и [spark](skills)
+    - работал с [machine learning](skills) и [nlp](skills)
+    - владею [docker](skills) и [kubernetes](skills)
+    - использую [pandas](skills) и [tableau](skills)
+    - хочу получать [100](salary_expected)
+    - зарплата [200000](salary_expected)
+    - [150000](salary_expected) рублей
+
+- synonym: project_management
+  examples: |
+    - управление проектами
+    - project management
+    - pm
+    - проектный менеджмент
+    - project lead
+
+- synonym: stakeholder_management
+  examples: |
+    - стейкхолдеры
+    - stakeholder
+    - управление стейкхолдерами
+    - заказчики
+    - stakeholders
+
+- synonym: agile_scrum
+  examples: |
+    - agile
+    - scrum
+    - эджайл
+    - скрам
+    - agile scrum
+
+- synonym: jira
+  examples: |
+    - джира
+    - jira
+    - atlassian jira
+    - джиру
+    - jira software
+
+- synonym: risk_management
+  examples: |
+    - управление рисками
+    - risk management
+    - риски
+    - risks
+    - риск менеджмент
+
+- synonym: roadmap_planning
+  examples: |
+    - роадмап
+    - roadmap
+    - планирование роадмапа
+    - product roadmap
+    - дорожная карта
+
+- synonym: team_leadership
+  examples: |
+    - лидерство в команде
+    - team lead
+    - тимлид
+    - управление командой
+    - leadership
+
+- synonym: business_analysis
+  examples: |
+    - бизнес-анализ
+    - business analysis
+    - ba
+    - бизнес аналитик
+    - business analyst
+
+- synonym: ml_project_lifecycle
+  examples: |
+    - ml lifecycle
+    - жизненный цикл ml
+    - ml project lifecycle
+    - цикл ml проекта
+    - ml pipeline
+
+- synonym: confluence
+  examples: |
+    - конфлюенс
+    - confluence
+    - atlassian confluence
+    - конфлю
+    - wiki
+
+- synonym: budgeting
+  examples: |
+    - бюджетирование
+    - budgeting
+    - бюджет
+    - budget management
+    - финансовое планирование
+
+- synonym: sql
+  examples: |
+    - sql
+    - sequel
+    - скуль
+    - postgres
+    - postgresql
+
+- synonym: python
+  examples: |
+    - питон
+    - пайтоном
+    - питончик
+    - пайтон
+    - py
+    - питухон
+    - pitehon
+
+- synonym: pandas
+  examples: |
+    - пандас
+    - пандой
+    - пандос
+    - pandas
+    - панда
+
+- synonym: power_bi
+  examples: |
+    - power bi
+    - powerbi
+    - павер би
+    - power bi desktop
+    - би
+
+- synonym: tableau
+  examples: |
+    - tableau
+    - табло
+    - tableau desktop
+    - таблио
+    - таблу
+
+- synonym: statistics
+  examples: |
+    - статистика
+    - statistics
+    - стат
+    - статистический анализ
+    - stats
+
+- synonym: data_visualization
+  examples: |
+    - визуализация данных
+    - data viz
+    - датавиж
+    - data visualization
+    - дашборды
+
+- synonym: ab_testing
+  examples: |
+    - a/b testing
+    - a/b тесты
+    - аб тесты
+    - ab testing
+    - сплит тестирование
+
+- synonym: etl
+  examples: |
+    - etl
+    - elt
+    - этл
+    - extract transform load
+    - data pipeline
+
+- synonym: spark
+  examples: |
+    - spark
+    - apache spark
+    - спарк
+    - pyspark
+    - spark sql
+
+- synonym: kafka
+  examples: |
+    - kafka
+    - кафка
+    - apache kafka
+    - консьюмер
+    - producer kafka
+
+- synonym: postgresql
+  examples: |
+    - postgresql
+    - postgres
+    - постгрес
+    - pg
+    - postgres sql
+
+- synonym: clickhouse
+  examples: |
+    - clickhouse
+    - кликхаус
+    - click house
+    - ch
+    - clickhouse sql
+
+- synonym: hadoop
+  examples: |
+    - hadoop
+    - хадуп
+    - hdfs
+    - apache hadoop
+    - hadoop ecosystem
+
+- synonym: data_warehousing
+  examples: |
+    - dwh
+    - data warehouse
+    - хранилище данных
+    - dw
+    - data warehousing
+
+- synonym: dbt
+  examples: |
+    - dbt
+    - data build tool
+    - дбт
+    - dbt core
+    - dbt cloud
+
+- synonym: machine_learning
+  examples: |
+    - machine learning
+    - ml
+    - машинное обучение
+    - машин лёрнинг
+    - ml модели
+
+- synonym: scikit_learn
+  examples: |
+    - scikit-learn
+    - sklearn
+    - scikit
+    - scikit learn
+    - скикит
+
+- synonym: pytorch
+  examples: |
+    - pytorch
+    - торч
+    - питорч
+    - py torch
+    - torch
+
+- synonym: tensorflow
+  examples: |
+    - tensorflow
+    - tf
+    - тензорфлоу
+    - tensor flow
+    - keras
+
+- synonym: deep_learning
+  examples: |
+    - deep learning
+    - dl
+    - глубокое обучение
+    - нейронные сети
+    - deep nn
+
+- synonym: nlp
+  examples: |
+    - nlp
+    - natural language processing
+    - обработка естественного языка
+    - нлп
+    - text mining
+
+- synonym: computer_vision
+  examples: |
+    - computer vision
+    - cv
+    - компьютерное зрение
+    - vision
+    - opencv
+
+- synonym: xgboost
+  examples: |
+    - xgboost
+    - xgb
+    - xg boost
+    - градиентный бустинг
+    - boosting
+
+- synonym: docker
+  examples: |
+    - docker
+    - докер
+    - docker compose
+    - контейнеры
+    - dockerfile
+
+- synonym: kubernetes
+  examples: |
+    - kubernetes
+    - кубер
+    - k8s
+    - кубернетес
+    - k8s cluster
+
+- synonym: mlflow
+  examples: |
+    - mlflow
+    - ml flow
+    - млфлоу
+    - mlops platform
+    - experiment tracking
+
+- synonym: monitoring
+  examples: |
+    - monitoring
+    - мониторинг
+    - prometheus
+    - grafana
+    - model monitoring
+
+- synonym: cicd
+  examples: |
+    - ci/cd
+    - cicd
+    - continuous integration
+    - ci cd
+    - devops pipeline
+
+- synonym: terraform
+  examples: |
+    - terraform
+    - терраформ
+    - iac
+    - infrastructure as code
+    - tf
