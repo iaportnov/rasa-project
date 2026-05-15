@@ -24,7 +24,6 @@ async def get_rasa_response(user_id: int, text: str):
 
 @dp.message_handler(commands=['start', 'restart'])
 async def cmd_start(message: types.Message):
-    # Отправляем в Rasa команду /restart, чтобы сбросить все слоты и историю
     await get_rasa_response(message.from_user.id, '/restart')
     await message.answer('Диалог сброшен. Начнем сначала!')
 
@@ -45,6 +44,5 @@ if __name__ == '__main__':
     import asyncio
     loop = asyncio.new_event_loop()
     asyncio.set_event_loop(loop)
-    # skip_updates=True пропустит сообщения, пришедшие пока бот был выключен
     executor.start_polling(dp, skip_updates=True, loop=loop)
 
