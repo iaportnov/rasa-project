@@ -2,7 +2,6 @@
 from skills_config import skills_weights
 
 def simple_scoring(candidate_skills, roles):
-    """Улучшенный скоринг с нормализацией до 0-100"""
     scores = {}
     
     for role in roles:
@@ -18,9 +17,8 @@ def simple_scoring(candidate_skills, roles):
         if relevant_count == 0:
             scores[role] = 0
         else:
-            # Улучшенная формула — теперь оценки будут выше и логичнее
-            base_score = total * 12                    # основной множитель
-            bonus = relevant_count * 5                 # бонус за разнообразие навыков
+            base_score = total * 12 
+            bonus = relevant_count * 5
             scores[role] = min(100, base_score + bonus)
     
     return scores
