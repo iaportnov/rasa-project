@@ -111,7 +111,7 @@ SKILL_SYNONYMS = {
     "terraform": ["terraform", "терраформ", "iac", "infrastructure as code", "tf"],
 }
 
-# ====================== ЗАРПЛАТНЫЕ ВИЛКИ (в тыс. руб.) ======================
+#ЗАРПЛАТНЫЕ ВИЛКИ (в тыс. руб.)
 ROLE_SALARY_RANGES = {
     "project_manager": {"min": 150, "max": 350},
     "data_analyst":    {"min": 120, "max": 280},
@@ -120,9 +120,7 @@ ROLE_SALARY_RANGES = {
     "mlops_engineer":  {"min": 220, "max": 500},
 }
 
-# ====================== РАСШИРЕННЫЕ СВЯЗИ МЕЖДУ НАВЫКАМИ ======================
-
-# Теперь связи гораздо плотнее и логичнее
+#РАСШИРЕННЫЕ СВЯЗИ МЕЖДУ НАВЫКАМИ
 skill_to_skill = {
     "python": ["pandas", "numpy", "scikit_learn", "pytorch", "tensorflow", "matplotlib", "seaborn", "xgboost"],
     "pandas": ["numpy", "scikit_learn", "matplotlib", "seaborn", "sql"],
