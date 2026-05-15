@@ -1,8 +1,6 @@
-# ====================== skills_config.py ======================
-# Все навыки имеют веса для всех 5 ролей + расширенные синонимы (по 5+ вариантов)
 
 skills_weights = {
-    # ==================== Project Manager ====================
+    #Project Manager
     "project_management":   {"project_manager": 5, "data_analyst": 2, "data_engineer": 1, "data_scientist": 1, "mlops_engineer": 1},
     "stakeholder_management":{"project_manager": 5, "data_analyst": 3, "data_engineer": 2, "data_scientist": 2, "mlops_engineer": 2},
     "agile_scrum":          {"project_manager": 5, "data_analyst": 3, "data_engineer": 2, "data_scientist": 2, "mlops_engineer": 2},
@@ -15,7 +13,7 @@ skills_weights = {
     "confluence":           {"project_manager": 4, "data_analyst": 2, "data_engineer": 2, "data_scientist": 2, "mlops_engineer": 2},
     "budgeting":            {"project_manager": 5, "data_analyst": 2, "data_engineer": 1, "data_scientist": 1, "mlops_engineer": 1},
 
-    # ==================== Data Analyst ====================
+    #Data Analyst
     "sql":                  {"project_manager": 2, "data_analyst": 5, "data_engineer": 4, "data_scientist": 4, "mlops_engineer": 3},
     "python":               {"project_manager": 2, "data_analyst": 5, "data_engineer": 5, "data_scientist": 5, "mlops_engineer": 5},
     "pandas":               {"project_manager": 1, "data_analyst": 5, "data_engineer": 4, "data_scientist": 5, "mlops_engineer": 3},
@@ -25,7 +23,7 @@ skills_weights = {
     "data_visualization":   {"project_manager": 2, "data_analyst": 5, "data_engineer": 3, "data_scientist": 4, "mlops_engineer": 2},
     "ab_testing":           {"project_manager": 2, "data_analyst": 5, "data_engineer": 2, "data_scientist": 4, "mlops_engineer": 2},
 
-    # ==================== Data Engineer ====================
+    #Data Engineer
     "etl":                  {"project_manager": 1, "data_analyst": 3, "data_engineer": 5, "data_scientist": 3, "mlops_engineer": 4},
     "spark":                {"project_manager": 1, "data_analyst": 2, "data_engineer": 5, "data_scientist": 4, "mlops_engineer": 4},
     "kafka":                {"project_manager": 1, "data_analyst": 2, "data_engineer": 5, "data_scientist": 3, "mlops_engineer": 5},
@@ -35,7 +33,7 @@ skills_weights = {
     "data_warehousing":     {"project_manager": 1, "data_analyst": 3, "data_engineer": 5, "data_scientist": 2, "mlops_engineer": 3},
     "dbt":                  {"project_manager": 1, "data_analyst": 3, "data_engineer": 5, "data_scientist": 3, "mlops_engineer": 4},
 
-    # ==================== Data Scientist ====================
+    #Data Scientist
     "machine_learning":     {"project_manager": 1, "data_analyst": 3, "data_engineer": 2, "data_scientist": 5, "mlops_engineer": 3},
     "scikit_learn":         {"project_manager": 1, "data_analyst": 4, "data_engineer": 3, "data_scientist": 5, "mlops_engineer": 3},
     "pytorch":              {"project_manager": 1, "data_analyst": 3, "data_engineer": 3, "data_scientist": 5, "mlops_engineer": 4},
@@ -45,7 +43,7 @@ skills_weights = {
     "computer_vision":      {"project_manager": 1, "data_analyst": 1, "data_engineer": 1, "data_scientist": 5, "mlops_engineer": 3},
     "xgboost":              {"project_manager": 1, "data_analyst": 3, "data_engineer": 2, "data_scientist": 5, "mlops_engineer": 3},
 
-    # ==================== MLOps ====================
+    # MLOps
     "docker":               {"project_manager": 1, "data_analyst": 2, "data_engineer": 4, "data_scientist": 4, "mlops_engineer": 5},
     "kubernetes":           {"project_manager": 1, "data_analyst": 1, "data_engineer": 4, "data_scientist": 4, "mlops_engineer": 5},
     "mlflow":               {"project_manager": 1, "data_analyst": 2, "data_engineer": 4, "data_scientist": 4, "mlops_engineer": 5},
@@ -54,7 +52,7 @@ skills_weights = {
     "terraform":            {"project_manager": 1, "data_analyst": 1, "data_engineer": 3, "data_scientist": 3, "mlops_engineer": 5},
 }
 
-# ====================== КРИТИЧЕСКИЕ НАВЫКИ ======================
+#КРИТИЧЕСКИЕ НАВЫКИ
 CRITICAL_SKILLS = {
     "project_manager": ["project_management", "stakeholder_management", "agile_scrum"],
     "data_analyst":    ["sql", "python", "pandas"],
@@ -63,7 +61,7 @@ CRITICAL_SKILLS = {
     "mlops_engineer":  ["docker", "kubernetes", "python"],
 }
 
-# ====================== СИНОНИМЫ (по 5+ вариантов на навык) ======================
+# СИНОНИМЫ
 SKILL_SYNONYMS = {
     "project_management": ["управление проектами", "project management", "pm", "проектный менеджмент", "project lead"],
     "stakeholder_management": ["стейкхолдеры", "stakeholder", "управление стейкхолдерами", "заказчики", "stakeholders"],
